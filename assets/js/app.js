@@ -85,4 +85,9 @@ d3.csv("assets/data/data.csv").then(function(healthData){
         .attr("class", "axisText")
         .attr("Percentage of Smokers (%)")
 
+    chartGroup.append("text")
+        .attr("transform", `translate(${width/2}, ${height + margin.top + 30})`)
+        .attr("class", "axisText")
+        .text("Percentage of Poverty (%)")
+
 })
