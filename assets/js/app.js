@@ -19,3 +19,10 @@ let svgHeight = 500;
     .append("svg")
     .attr("width", svgWidth)
     .attr("height", svgHeight)
+
+let chartGroup = svg.append("g")
+    .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+d3.csv("data/data.csv").then(function(healthData){
+    
+})
