@@ -23,6 +23,24 @@ let svgHeight = 500;
 let chartGroup = svg.append("g")
     .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-d3.csv("data/data.csv").then(function(healthData){
-    
+d3.csv("assets/data/data.csv").then(function(healthData){
+    // console.log(healthData)
+
+    //Parse data as integer
+    healthData.forEach(function(data){
+        data.age = +data.age;
+        data.income = +data.income;
+    })
+
+    let xLinearScale = d3.scaleLinear()
+        .domain([20, d3.max([healthData, d => d.age])])
+        .range([0, width])
+
+    let yLinearScale = d3.scaleLinear()
+        .domain([0, d3.max(healthData, d => d.income)])
+        .range([height, 0])
+
+    let bottomAxis = d3.axisBottom(xLinearScale)
+    let leftAxis = d3.axisLeft(yLinearScale)
+
 })
