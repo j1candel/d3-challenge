@@ -5,9 +5,9 @@ let svgHeight = 500;
 //Setting the dimensions of the margin 
  let margin = {
      top: 20,
-     bottom: 40,
-     left: 60, 
-     right: 80
+     right: 40,
+     bottom: 60, 
+     left: 100
  };
 
  //Setting the width and height
@@ -28,19 +28,61 @@ d3.csv("assets/data/data.csv").then(function(healthData){
 
     //Parse data as integer
     healthData.forEach(function(data){
-        data.age = +data.age;
-        data.income = +data.income;
-    })
+        data.poverty = +data.poverty;
+        data.smokes = +data.smokes;
+    });
 
     let xLinearScale = d3.scaleLinear()
-        .domain([20, d3.max([healthData, d => d.age])])
+        .domain([5, d3.max(healthData, d => d.poverty)])
         .range([0, width])
 
     let yLinearScale = d3.scaleLinear()
-        .domain([0, d3.max(healthData, d => d.income)])
-        .range([height, 0])
+        .domain([0, d3.max(healthData, d => d.smokes) +5])
+        .range([height, 0]);
 
     let bottomAxis = d3.axisBottom(xLinearScale)
     let leftAxis = d3.axisLeft(yLinearScale)
+
+    chartGroup.append("g")
+        .attr("transform", `translate(0, ${height})`)
+        .call(bottomAxis)
+
+    chartGroup.append("g")
+        .call(leftAxis)
+    
+    let circlesGroup = chartGroup.selectAll("circle")
+        .data(healthData)
+        .enter()
+        .append("circle")
+        .attr("cx", d => xLinearScale(d.poverty))
+        .attr("cy", d => yLinearScale(d.smokes))
+        .attr("r", "10")
+        .attr("fill", "blue")
+        .attr("opacity", ".5")
+
+    let toolTip = d3.tip()
+        .attr("class", "tooltip")
+        .offset([80, -60])
+        .html(function(d){
+            return (`<br>State: ${d.state} <br>Poverty: ${d.poverty} % <br>Smokes: ${d.smokes} %`)
+        })
+    
+    chartGroup.call(toolTip)
+
+    circlesGroup.on("click", function(data) {
+        toolTip.show(data, this)
+    })
+
+        .on("mouseout", function(data, index){
+            toolTip.hide(data)
+        })
+
+    chartGroup.append("text")
+        .attr("transform", "rotate(-90")
+        .attr("y", 0 - margin.left + 40)
+        .attr("x", 0 - (height/2))
+        .attr("dy", "1em")
+        .attr("class", "axisText")
+        .attr("Percentage of Smokers (%)")
 
 })
