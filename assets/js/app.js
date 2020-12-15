@@ -89,6 +89,16 @@ d3.csv("assets/data/data.csv").then(function(healthData){
             toolTip.hide(data)
         })
 
+    TextGroup.call(toolTip)
+
+    TextGroup.on("click", function(data) {
+        toolTip.show(data, this)
+        })
+    
+        .on("mouseout", function(data, index){
+            toolTip.hide(data)
+        })
+
     chartGroup.append("text")
         .attr("transform", "rotate(-90)")
         .attr("y", 0 - margin.left + 40)
