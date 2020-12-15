@@ -59,12 +59,24 @@ d3.csv("assets/data/data.csv").then(function(healthData){
         .attr("r", "10")
         .attr("fill", "blue")
         .attr("opacity", ".5")
+        .attr("class", "abbr")
+    
+    let textGroup = chartGroup.selectAll(".stateText")
+        .data(healthData)
+        .enter()
+        .append("text")
+        .classed("stateText", true)
+        .attr("x", d => xLinearScale(d.poverty))
+        .attr("y", d => yLinearScale(d.smokes))
+        .attr("dy", 3)
+        .attr("font-size", "10px")
+        .text(function(d){return d.abbr})
 
     let toolTip = d3.tip()
         .attr("class", "tooltip")
         .offset([80, -60])
         .html(function(d){
-            return (`<br>State: ${d.state} <br>Poverty: ${d.poverty} % <br>Smokes: ${d.smokes} %`)
+            return (`${d.state} <br>Poverty: ${d.poverty} % <br>Smokes: ${d.smokes} %`)
         })
     
     chartGroup.call(toolTip)
