@@ -73,7 +73,6 @@ d3.csv("assets/data/data.csv").then(function(healthData){
         .text(function(d){return d.abbr})
 
     let toolTip = d3.tip()
-        .attr("class", "tooltip")
         .offset([80, -60])
         .html(function(d){
             return (`${d.state} <br>Poverty: ${d.poverty} % <br>Smokes: ${d.smokes} %`)
@@ -89,9 +88,9 @@ d3.csv("assets/data/data.csv").then(function(healthData){
             toolTip.hide(data)
         })
 
-    TextGroup.call(toolTip)
+    textGroup.call(toolTip)
 
-    TextGroup.on("click", function(data) {
+    textGroup.on("click", function(data) {
         toolTip.show(data, this)
         })
     
